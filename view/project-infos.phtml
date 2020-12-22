@@ -1,1 +1,37 @@
-project-infos
+<div class="project-infos" style="border:1px solid #ccc; padding: 20px;">
+  <h3 class="project-title"><?php echo $project->title(); ?></h3>
+  <div class="project-description"><?php echo $project->description(); ?></div>
+  <?php echo $this->thumbnail($project, 'square', [
+      'title' => $this->scripto()->translate($project->mediaType(), 'Primary media'),
+      'alt' => $this->scripto()->translate($project->mediaType(), 'Primary media'),
+      'class' => 'project-image'
+  ]); ?>
+
+  <?php if (count($publishers)): ?>
+    <div class="dc publishers">
+      <?php echo implode(', ', $publishers); ?>
+    </div>
+  <?php endif ?>
+
+  <?php if (count($subjects)): ?>
+    <div class="dc subjects">
+      <?php echo implode(', ', $subjects); ?>
+    </div>
+  <?php endif ?>
+
+  <?php if (count($types)): ?>
+    <div class="dc types">
+      <?php echo implode(', ', $types); ?>
+    </div>
+  <?php endif ?>
+
+  <?php if (count($linkedResources)): ?>
+    <div class="linked-resources">
+      <?php foreach ($linkedResources as $uri => $label): ?>
+        <span><strong><?php echo $label; ?></strong> : <a target="_blank" href="<?php echo $uri ?>"><?php echo $uri ?></a></span>
+      <?php endforeach; ?>
+    </div>
+  <?php endif ?>
+
+
+</div>
