@@ -3,6 +3,7 @@ namespace Transcrire\View\Helper;
 
 use Laminas\Router\Http\RouteMatch;
 use Laminas\View\Helper\AbstractHelper;
+use Scripto\Mediawiki\ApiClient;
 
 /**
  * View helper used to render Transcrire template elements.
@@ -19,7 +20,7 @@ class Transcrire extends AbstractHelper
     /**
      * @param RouteMatch $routeMatch
      */
-    public function __construct(RouteMatch $routeMatch)
+    public function __construct(ApiClient $apiClient, RouteMatch $routeMatch)
     {
         $this->routeMatch = $routeMatch;
     }
@@ -75,6 +76,16 @@ class Transcrire extends AbstractHelper
                 'types'            => $types,
                 'linkedResources'  => $linkedResources,
             ]);
+    }
+
+
+    /**
+     * Display latest contributions
+     *
+     * @return HTML
+     */
+    public function latestContributions() {
+
     }
 
 }
