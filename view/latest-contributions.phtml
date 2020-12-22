@@ -1,0 +1,23 @@
+<?php if (count($latestContributions)): ?>
+<div class="latest-contributions" style="border:1px solid #ccc; padding: 20px;">
+  <h3 class="contributions-title">Contributions récentes</h3>
+  <?php foreach($latestContributions as $contribution): ?>
+    <?php
+      setlocale(LC_TIME, "fr_FR");
+      $date = $contribution['timestamp']->format('d/m/Y');
+      $sizeDiff = $contribution['newlen'] - $contribution['oldlen'];
+      $sMedia = isset($contribution['scripto_media']) ? $contribution['scripto_media'] : null;
+      $sItem = $sMedia ? $sMedia->scriptoItem() : null;
+      $project = $sItem ? $sItem->scriptoProject() : null;
+      $isTalk = (1 === $contribution['ns']);
+    ?>
+    <div class="contributions">
+      <span class="contribution-date">Le <?php echo $date; ?></span>
+      <span class="contribution-user"><?php echo $this->hyperlink($contribution['user'], $this->url('scripto-user-contributions', ['action' => 'contributions', 'user-id' => $contribution['user']], true)); ?> a transcrit</span>
+      <span class="contribution-item"><?php echo $sItem ? $sItem->link($sItem->item()->displayTitle()) : $page['title']; ?></span>
+    </div>
+  <?php endforeach ?>
+</div>
+<?php else: ?>
+  Pas de contributions récentes pour ce contenu
+<?php endif; ?>

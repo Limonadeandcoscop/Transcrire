@@ -4,12 +4,23 @@ namespace Transcrire\View\Helper;
 use Laminas\Router\Http\RouteMatch;
 use Laminas\View\Helper\AbstractHelper;
 use Scripto\Mediawiki\ApiClient;
+use Scripto\ControllerPlugin\Scripto;
 
 /**
  * View helper used to render Transcrire template elements.
  */
 class Transcrire extends AbstractHelper
 {
+
+    /**
+     * @var Scripto controller plugin
+     */
+    protected $scriptoPlugin;
+
+    /**
+     * @var Scripto API Client
+     */
+    protected $apiClient;
 
     /**
      * @var RouteMatch
@@ -20,9 +31,11 @@ class Transcrire extends AbstractHelper
     /**
      * @param RouteMatch $routeMatch
      */
-    public function __construct(ApiClient $apiClient, RouteMatch $routeMatch)
+    public function __construct(Scripto $scriptoPlugin, ApiClient $apiClient, RouteMatch $routeMatch)
     {
-        $this->routeMatch = $routeMatch;
+        $this->scriptoPlugin    = $scriptoPlugin;
+        $this->routeMatch       = $routeMatch;
+        $this->apiClient        = $apiClient;
     }
 
 
@@ -86,6 +99,29 @@ class Transcrire extends AbstractHelper
      */
     public function latestContributions() {
 
-    }
+        $view = $this->getView();
+        $currentProjectId = $view->project->id();
 
+        $hours = 1440;
+        $start = null;
+
+        $response = $this->apiClient->queryRecentChanges($hours, 100, $start);
+
+        $recentTranscriptions = $this->scriptoPlugin->prepareMediawikiList($response['query']['recentchanges']);
+
+        $latestContributions = [];
+
+        foreach ($recentTranscriptions as $key => $recentTranscription) {
+
+            if (empty($recentTranscription['scripto_media'])) continue;
+
+            $projectId = $recentTranscription['scripto_media']->scriptoItem()->scriptoProject()->id();
+
+            if ($projectId != $currentProjectId) continue;
+
+            $latestContributions[] = $recentTranscription;
+        }
+
+        return $view->render('latest-contributions', ['latestContributions' => $latestContributions]);
+    }
 }
