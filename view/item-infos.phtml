@@ -1,0 +1,46 @@
+<div class="item-infos" style="border:1px solid #ccc; padding: 20px; width:100%; ">
+
+  <div style="width:48%; float:left;">
+    <h3 class="item-title"><?php echo $item->title(); ?></h3>
+    <div class="item-project">
+      Projet  : <a href="<?php echo $project->url(); ?>"><?php echo $project->title() ?></a>
+    </div>
+    <div class="item-progress-bar">
+      <?php echo $itemProgressBar ?>
+    </div>
+  </div>
+
+  <div style="width:48%; float:right;">
+
+    <?php if (count($linkedResources)): ?>
+      <h4>Ressources liées</h4>
+      <div class="linked-resources">
+        <?php foreach ($linkedResources as $uri => $label): ?>
+          <span><strong><?php echo $label; ?></strong> : <a target="_blank" href="<?php echo $uri ?>"><?php echo $uri ?></a></span>
+        <?php endforeach; ?>
+      </div>
+    <?php endif ?>
+
+    <?php if (count($publishers) || count($subjects) || count($types)): ?>
+      <h4>Informations complémentaires</h4>
+      <?php if (count($publishers)): ?>
+        <div class="dc publishers">
+          Institution de conservation : <?php echo implode(', ', $publishers); ?>
+        </div>
+      <?php endif ?>
+
+      <?php if (count($subjects)): ?>
+        <div class="dc subjects">
+          Thématique : <?php echo implode(', ', $subjects); ?>
+        </div>
+      <?php endif ?>
+
+      <?php if (count($types)): ?>
+        <div class="dc types">
+          Genre : <?php echo implode(', ', $types); ?>
+        </div>
+      <?php endif ?>
+    <?php endif ?>
+
+  </div>
+</div>

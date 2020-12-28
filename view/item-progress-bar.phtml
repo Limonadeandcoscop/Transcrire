@@ -1,0 +1,18 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<div class="progress">
+  <div class="progress-bar progress-bar-warning" title="<?php echo $nb_completed ?> / <?php echo $nb_medias ?>" role="progressbar" style="width:<?php echo $percent_completed ?>%">
+    Completed
+  </div>
+  <div class="progress-bar progress-bar-danger" title="<?php echo $nb_in_progress ?> / <?php echo $nb_medias ?>"  role="progressbar" style="width:<?php echo $percent_in_progress ?>%">
+    In progress
+  </div>
+  <div class="progress-bar progress-bar-info" title="<?php echo $nb_approved ?> / <?php echo $nb_medias ?>"  role="progressbar" style="width:<?php echo $percent_approved ?>%">
+    Approved
+  </div>
+  <div class="progress-bar progress-bar-success" title="<?php echo $nb_new ?> / <?php echo $nb_medias ?>"  role="progressbar" style="width:<?php echo $percent_new ?>%">
+    New
+  </div>
+</div>
