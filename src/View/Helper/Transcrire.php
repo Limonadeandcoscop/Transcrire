@@ -263,4 +263,38 @@ class Transcrire extends AbstractHelper
         return $view->render('item-metadata', ['metadata' => $metadata]);
     }
 
+
+    /**
+     * Display item contributions
+     *
+     * @return HTML
+     */
+    public function itemContributions()
+    {
+        $view = $this->getView();
+        $sItem = $view->sItem;
+        $currentItemId = $sItem->id();
+
+        $hours = 1440;
+        $start = null;
+
+        $response = $this->apiClient->queryRecentChanges($hours, 100, $start);
+
+        $recentTranscriptions = $this->scriptoPlugin->prepareMediawikiList($response['query']['recentchanges']);
+
+        $itemContributions = [];
+
+        foreach ($recentTranscriptions as $key => $recentTranscription) {
+
+            if (empty($recentTranscription['scripto_media'])) continue;
+
+            $itemId = $recentTranscription['scripto_media']->scriptoItem()->id();
+
+            if ($itemId != $currentItemId) continue;
+
+            $itemContributions[] = $recentTranscription;
+        }
+
+        return $view->render('item-contributions', ['itemContributions' => $itemContributions]);
+    }
 }
