@@ -233,4 +233,34 @@ class Transcrire extends AbstractHelper
 
         return $view->render('latest-contributions', ['latestContributions' => $latestContributions]);
     }
+
+
+     /**
+     * Display item metadata
+     *
+     * @return HTML
+     */
+    public function itemMetadata()
+    {
+        $view = $this->getView();
+        $item = $view->item;
+        $values = $item->values();
+        $metadata = [];
+
+        foreach ($values as $key => $v) {
+            $metadata[$key]['label'] = $v['property']->label();
+            $i = 0;
+            foreach ($v['values'] as $value) {
+                $metadata[$key]['values'][$i]['type'] = $value->type();
+                $metadata[$key]['values'][$i]['value'] = (string)$value;
+                if ($value->type() == 'uri') {
+                    $metadata[$key]['values'][$i]['uri'] = $value->uri();
+                }
+                $i++;
+            }
+        }
+
+        return $view->render('item-metadata', ['metadata' => $metadata]);
+    }
+
 }

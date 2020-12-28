@@ -1,0 +1,22 @@
+<?php if (count($metadata)): ?>
+<div class="item-metadata" style="border:1px solid #ccc; padding: 20px;">
+  <h3>Notice</h3>
+  <?php foreach ($metadata as $values): ?>
+    <div class="item-metadata-label">
+      <strong><?php echo $values['label'] ?></strong>
+    </div>
+    <div class="item-metadata-label">
+      <?php foreach($values['values'] as $value): ?>
+        <ul>
+        <?php if ($value['type'] == 'uri'): ?>
+          <li class="uri"><a href="<?php echo $value['uri'] ?>" target="_blank"><?php echo $value['value'] ?></a></li>
+        <?php else: ?>
+          <li class="text"><?php echo $value['value'] ?></li>
+        <?php endif; ?>
+        </ul>
+      <?php endforeach ?>
+
+    </div>
+  <?php endforeach ?>
+</div>
+<?php endif; ?>
