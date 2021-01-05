@@ -297,4 +297,23 @@ class Transcrire extends AbstractHelper
 
         return $view->render('item-contributions', ['itemContributions' => $itemContributions]);
     }
+
+
+    /**
+     * Display workspace area
+     *
+     * @return HTML
+     */
+    public function workspace()
+    {
+        $user = $this->apiClient->queryUserInfo();
+
+        $view = $this->getView();
+        $sMedia = $view->sMedia;
+        $sItem = $view->sItem;
+        $sProject = $sItem->scriptoProject();
+
+        return $view->render('workspace', ['user' => $user, 'sMedia' => $sMedia, 'sProject' => $sProject]);
+    }
+
 }

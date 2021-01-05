@@ -1,0 +1,19 @@
+<div class="item-infos" style="border:1px solid #ccc; padding: 20px; width:100%; ">
+
+  <h4>Espace de travail</h4>
+
+  <div style="width:48%; float:left;">
+    <ul>
+      <li><?php echo $this->hyperlink($this->translate('Mon tableau de bord'), $this->url('scripto')); ?></li>
+      <li><?php echo $this->hyperlink($this->translate('Mes contributions'), $this->url('scripto-user-contributions', ['user-id' => $user['name']], true)); ?></li>
+      <li><?php echo $this->hyperlink($this->translate('Pages consultées'), $this->url('admin/scripto-user-watchlist', ['user-id' => $user['name']])); ?></li>
+    </ul>
+  </div>
+
+  <div style="width:48%; float:right;">
+      <li><?php echo $sProject->link($this->translate('Bonnes pratiques'), 'guidelines'); ?></li>
+      <li><?php echo $sMedia->link($this->translate('Voir les notes'), 'show-talk'); ?></li>
+      <li><?php echo $this->hyperlink($this->translate('Parcourir les révisions'), $this->url('scripto-revision', ['action' => 'browse'], true)); ?></li>
+  </div>
+
+</div>
