@@ -1,0 +1,39 @@
+<div class="media-infos" style="border:1px solid #ccc; padding: 20px; width:100%; ">
+
+    <?php if (count($linkedResources)): ?>
+      <h4>Ressources liées</h4>
+      <div class="linked-resources">
+        <?php foreach ($linkedResources as $uri => $label): ?>
+          <span><strong><?php echo $this->translate($label); ?></strong> : <a target="_blank" href="<?php echo $uri ?>"><?php echo $uri ?></a></span>
+        <?php endforeach; ?>
+      </div>
+    <?php endif ?>
+
+    <?php if (count($publishers) || count($subjects) || count($types)): ?>
+      <h4>Informations complémentaires</h4>
+      <?php if (count($publishers)): ?>
+        <div class="dc publishers">
+          Institution de conservation : <?php echo implode(', ', $publishers); ?>
+        </div>
+      <?php endif ?>
+
+      <?php if (count($subjects)): ?>
+        <div class="dc subjects">
+          Thématique : <?php echo implode(', ', $subjects); ?>
+        </div>
+      <?php endif ?>
+
+      <?php if (count($types)): ?>
+        <div class="dc types">
+          Genre : <?php echo implode(', ', $types); ?>
+        </div>
+      <?php endif ?>
+    <?php endif ?>
+
+    <h4>Historique et révision</h4>
+    <div class="revisions">
+      <?php echo $sMedia->link($this->translate('Voir les notes'), 'show-talk'); ?><br />
+      <?php echo $this->hyperlink($this->translate('Parcourir les révisions'), $this->url('scripto-revision', ['action' => 'browse'], true)); ?><br />
+    </div>
+
+</div>
