@@ -1,0 +1,24 @@
+<?php if (count($results)): ?>
+<div class="latest-contributions" style="border:1px solid #ccc; padding: 20px;">
+  <h3 class="contributions-title">Ils/elles transcrivent</h3>
+  <?php foreach($results as $result): ?>
+    <?php
+      setlocale(LC_TIME, "fr_FR");
+      $date = $result['timestamp']->format('d/m/Y');
+      $sizeDiff = $result['newlen'] - $result['oldlen'];
+      $sMedia = isset($result['scripto_media']) ? $result['scripto_media'] : null;
+      $sItem = $sMedia ? $sMedia->scriptoItem() : null;
+      $project = $sItem ? $sItem->scriptoProject() : null;
+      $isTalk = (1 === $result['ns']);
+    ?>
+    <div class="contributions">
+      <span class="contribution-date">Le <?php echo $date; ?></span>
+      <span class="contribution-user"><?php echo $this->hyperlink($result['user'], $this->url('scripto-user-contributions', ['action' => 'contributions', 'user-id' => $result['user']], true)); ?> a transcrit</span>
+      <span class="contribution-media"><a href="<?php echo $sMedia->url() ?>"><?php echo $sMedia->media()->title() ?></a></span> de
+      <span class="contribution-item"><?php echo $sItem ? $sItem->link($sItem->item()->displayTitle()) : $page['title']; ?></span>
+    </div>
+  <?php endforeach ?>
+</div>
+<?php else: ?>
+  Pas de transcriptions récentes pour ce contenu
+<?php endif; ?>

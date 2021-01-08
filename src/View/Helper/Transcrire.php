@@ -372,4 +372,77 @@ class Transcrire extends AbstractHelper
         return $view->render('workspace', ['user' => $user, 'sMedia' => $sMedia, 'sProject' => $sProject]);
     }
 
+    public function recentChanges()
+    {
+        $hours = 1440;
+        $start = null;
+
+        $response = $this->apiClient->queryRecentChanges($hours, 100, $start);
+
+        $recentTranscriptions = $this->scriptoPlugin->prepareMediawikiList($response['query']['recentchanges']);
+
+        foreach ($recentTranscriptions as $key => $recentTranscription) {
+            if (@!$recentTranscription['scripto_media']) {
+                unset($recentTranscriptions[$key]);
+            }
+        }
+
+        $recentTranscriptionsByUser = [];
+        $users = [];
+        foreach ($recentTranscriptions as $key => $recentTranscription) {
+            $user = $recentTranscription['user'];
+            @$users[$user]++;
+            $scripto_media_id = $recentTranscription['scripto_media']->id();
+            // unset($recentTranscription['scripto_media']); // For testing
+            $recentTranscriptionsByUser[$user][$scripto_media_id][]  = $recentTranscription;
+        }
+
+        $max = count($recentTranscriptions);
+        if ($max > 20) $max = 20;
+
+        $nbUsers = count($users); // Nombre de users
+
+        $nbTranscriptions = 0;
+
+        if (count($recentTranscriptions) <= 20) { // Less than 20 transcriptions, display all results
+
+            $results = $recentTranscriptions;
+
+        } elseif ($nbUsers >= 20) { // More than 20 users, display one transcription for each user
+
+            // TODO
+
+        } else {
+
+         // echo '<pre>';
+         // print_r($recentTranscriptionsByUser);
+
+            $loop = 0;
+            do {
+                $loop++;
+                if ($loop == $max) break;
+
+                $userId = array_key_first($recentTranscriptionsByUser);
+                $mediasOfUser = array_shift($recentTranscriptionsByUser);
+                // print_r($mediasOfUser);
+
+                $mediaId = array_key_first($mediasOfUser);
+                $transcriptionsOfMedia = array_shift($mediasOfUser);
+
+                if (is_array($transcriptionsOfMedia[0])) {
+                    $results[] = $transcriptionsOfMedia[0];
+                    unset($recentTranscriptionsByUser[$userId][$mediaId]);
+                    $nbTranscriptions++;
+                } else {
+                    unset($recentTranscriptionsByUser[$userId]);
+                }
+
+            } while ($nbTranscriptions <= $max);
+        }
+
+        $recentTranscriptions = $results;
+
+        $view = $this->getView();
+        return $view->render('recent-changes', ['results' => $results]);
+    }
 }
